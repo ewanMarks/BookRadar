@@ -22,4 +22,8 @@
     <ProjectReference Include="..\BookRadar.Domain\BookRadar.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,25 @@
+﻿@model IReadOnlyList<BookRadar.Web.ViewModels.History.SearchHistoryViewModel>
+
+<table class="table table-striped table-hover table-bordered align-middle">
+    <thead>
+        <tr>
+            <th>Autor</th>
+            <th>Título</th>
+            <th>Año de publicación</th>
+            <th>Editorial</th>
+            <th>Fecha de consulta</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var h in Model)
+        {
+            <tr>
+                <td>@h.Author</td>
+                <td class="text-truncate-2" style="max-width: 420px">@h.Title</td>
+                <td>@(h.PublicationYear?.ToString() ?? "-")</td>
+                <td>@(string.IsNullOrWhiteSpace(h.Publisher) ? "-" : h.Publisher)</td>
+                <td>@h.SearchedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>

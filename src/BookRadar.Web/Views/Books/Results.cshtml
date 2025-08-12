@@ -1,27 +1,37 @@
 ﻿@model IReadOnlyList<BookRadar.Web.ViewModels.Book.BookViewModel>
-
 @{
-    ViewData["Title"] = "Results";
+    ViewData["Title"] = "Resultados";
+    Layout = "_Layout";
 }
 
-<h1>Results</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Resultados</h1>
+    <div class="d-flex gap-2">
+        <a asp-controller="Books" asp-action="Search" class="btn btn-outline-secondary btn-icon">
+            ◀️ <span>Volver a buscar</span>
+        </a>
+        <a asp-controller="Books" asp-action="History" class="btn btn-outline-primary btn-icon">
+            🗂️ <span>Historial</span>
+        </a>
+    </div>
+</div>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Publication Year</th>
-            <th>Publisher</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var b in Model)
-        {
-            <tr>
-                <td>@b.Title</td>
-                <td>@b.PublicationYear</td>
-                <td>@b.Publisher</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if (Model is null || !Model.Any())
+{
+    <div class="alert alert-warning">No se encontraron resultados para la búsqueda realizada.</div>
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                @await Html.PartialAsync("_BooksTablePartial", Model)
+            </div>
+            <div class="small text-muted mt-2">Total de libros: @Model.Count</div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/js/books.js" asp-append-version="true"></script>
+}

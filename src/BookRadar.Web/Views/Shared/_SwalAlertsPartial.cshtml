@@ -1,0 +1,35 @@
+﻿@using System.Text.Json
+@{
+    var msgSuccess = TempData["Success"] as string;
+    var msgInfo = TempData["Info"] as string;
+    var msgWarn = TempData["Warning"] as string;
+    var msgError = TempData["Error"] as string;
+
+    var modelErrors = ViewData.ModelState.IsValid
+        ? new List<string>()
+        : ViewData.ModelState.Values
+            .SelectMany(v => v.Errors)
+            .Select(e => string.IsNullOrWhiteSpace(e.ErrorMessage) ? "Error de validación." : e.ErrorMessage)
+            .ToList();
+}
+
+<script>
+    (() => {
+      // TempData
+      const success = @Html.Raw(JsonSerializer.Serialize(msgSuccess));
+      const info    = @Html.Raw(JsonSerializer.Serialize(msgInfo));
+      const warn    = @Html.Raw(JsonSerializer.Serialize(msgWarn));
+      const error   = @Html.Raw(JsonSerializer.Serialize(msgError));
+
+      if (success) Alerts.success(success);
+      if (info)    Alerts.info(info);
+      if (warn)    Alerts.warning(warn);
+      if (error)   Alerts.error(error);
+
+      // ModelState
+      const modelErrors = @Html.Raw(JsonSerializer.Serialize(modelErrors));
+      if (Array.isArray(modelErrors) && modelErrors.length > 0) {
+        Alerts.validation(modelErrors);
+      }
+    })();
+</script>

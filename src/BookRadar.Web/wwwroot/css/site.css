@@ -1,22 +1,35 @@
-html {
-  font-size: 14px;
+/* Espaciado consistente */
+h1, h2 {
+    margin-bottom: .75rem;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+/* Tarjetas y tablas */
+.card {
+    border-radius: 1rem;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.table thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 1;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.table td, .table th {
+    vertical-align: middle;
 }
 
-body {
-  margin-bottom: 60px;
+/* Truncamiento elegante si hay títulos largos */
+.text-truncate-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* Botones con íconos de bootstrap (usaremos emojis simples para evitar libs) */
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
 }

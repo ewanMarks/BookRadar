@@ -1,0 +1,21 @@
+﻿@model IReadOnlyList<BookRadar.Web.ViewModels.Book.BookViewModel>
+
+<table class="table table-striped table-hover table-bordered align-middle">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Año de publicación</th>
+            <th>Editorial</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td class="text-truncate-2" style="max-width: 420px">@b.Title</td>
+                <td>@(b.PublicationYear?.ToString() ?? "-")</td>
+                <td>@(string.IsNullOrWhiteSpace(b.Publisher) ? "-" : b.Publisher)</td>
+            </tr>
+        }
+    </tbody>
+</table>

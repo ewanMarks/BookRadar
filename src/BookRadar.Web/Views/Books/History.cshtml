@@ -1,31 +1,32 @@
 ﻿@model IReadOnlyList<BookRadar.Web.ViewModels.History.SearchHistoryViewModel>
-
 @{
-    ViewData["Title"] = "Search History";
+    ViewData["Title"] = "Historial de búsquedas";
+    Layout = "_Layout";
 }
 
-<h1>Search History</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Historial de búsquedas</h1>
+    <div class="d-flex gap-2">
+        <a asp-action="Search" class="btn btn-outline-secondary btn-icon">◀️ <span>Volver a buscar</span></a>
+    </div>
+</div>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Author</th>
-            <th>Title</th>
-            <th>Publication Year</th>
-            <th>Publisher</th>
-            <th>Search Date (UTC)</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var h in Model)
-        {
-            <tr>
-                <td>@h.Author</td>
-                <td>@h.Title</td>
-                <td>@h.PublicationYear</td>
-                <td>@h.Publisher</td>
-                <td>@h.SearchedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if (Model is null || !Model.Any())
+{
+    <div class="alert alert-info">Aún no hay búsquedas registradas. Realiza tu primera búsqueda en la pestaña “Búsqueda”.</div>
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                @await Html.PartialAsync("_HistoryTablePartial", Model)
+            </div>
+            <div class="small text-muted mt-2">Registros mostrados: @Model.Count</div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/js/history.js" asp-append-version="true"></script>
+}

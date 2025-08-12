@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Search by Author";
+}
+
+<h1>Search by Author</h1>
+
+<form method="post" asp-action="Search">
+    <input type="text" name="author" placeholder="Author name" class="form-control" />
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="text-danger mt-2">
+        @foreach (var err in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@err.ErrorMessage</div>
+        }
+    </div>
+}

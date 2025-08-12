@@ -1,36 +1,60 @@
-namespace BookRadar.Web
+using System.Reflection;
+using BookRadar.Application.Abstractions;
+using BookRadar.Infrastructure.Persistence;
+using BookRadar.Infrastructure.Http.Clients;
+using BookRadar.Domain.Abstractions;
+using Mapster;
+using MapsterMapper;
+using MediatR;
+using BookRadar.Infrastructure.Persistence.Context;
+using BookRadar.Infrastructure.Repositories.History;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// MVC + Razor
+builder.Services.AddControllersWithViews();
+
+// DbContext (SQL Server)
+builder.Services.AddDbContext<BookRadarDbContext>(opt =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+});
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+// MediatR (Application assembly)
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyReference).Assembly));
 
-            var app = builder.Build();
+// HttpClient para Open Library
+builder.Services.AddHttpClient<OpenLibraryHttpClient>();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+// Puertos -> Implementaciones
+builder.Services.AddScoped<IBookSearchService, OpenLibraryHttpClient>();
+builder.Services.AddScoped<ISearchHistoryRepository, SearchHistoryRepository>();
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+// Mapster (escanea Application + Infrastructure + Web)
+var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
+typeAdapterConfig.Scan(
+    Assembly.GetExecutingAssembly(),
+    typeof(ApplicationAssemblyReference).Assembly,
+    typeof(BookRadarDbContext).Assembly);
 
-            app.UseRouting();
+builder.Services.AddSingleton(typeAdapterConfig);
+builder.Services.AddScoped<IMapper, ServiceMapper>();
 
-            app.UseAuthorization();
+var app = builder.Build();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseStaticFiles();
+app.UseRouting();
 
-            app.Run();
-        }
-    }
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<BookRadarDbContext>();
+    db.Database.Migrate(); // crea/actualiza el esquema
 }
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Books}/{action=Search}/{id?}");
+
+app.Run();

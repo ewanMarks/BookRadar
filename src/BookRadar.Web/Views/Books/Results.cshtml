@@ -1,0 +1,27 @@
+﻿@model IReadOnlyList<BookRadar.Web.ViewModels.Book.BookViewModel>
+
+@{
+    ViewData["Title"] = "Results";
+}
+
+<h1>Results</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Publication Year</th>
+            <th>Publisher</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td>@b.Title</td>
+                <td>@b.PublicationYear</td>
+                <td>@b.Publisher</td>
+            </tr>
+        }
+    </tbody>
+</table>

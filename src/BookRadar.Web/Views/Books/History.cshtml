@@ -1,0 +1,31 @@
+﻿@model IReadOnlyList<BookRadar.Web.ViewModels.History.SearchHistoryViewModel>
+
+@{
+    ViewData["Title"] = "Search History";
+}
+
+<h1>Search History</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Author</th>
+            <th>Title</th>
+            <th>Publication Year</th>
+            <th>Publisher</th>
+            <th>Search Date (UTC)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var h in Model)
+        {
+            <tr>
+                <td>@h.Author</td>
+                <td>@h.Title</td>
+                <td>@h.PublicationYear</td>
+                <td>@h.Publisher</td>
+                <td>@h.SearchedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+            </tr>
+        }
+    </tbody>
+</table>

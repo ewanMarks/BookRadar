@@ -1,14 +1,12 @@
-using System.Reflection;
 using BookRadar.Application.Abstractions;
-using BookRadar.Infrastructure.Persistence;
-using BookRadar.Infrastructure.Http.Clients;
 using BookRadar.Domain.Abstractions;
-using Mapster;
-using MapsterMapper;
-using MediatR;
+using BookRadar.Infrastructure.Http.Clients;
 using BookRadar.Infrastructure.Persistence.Context;
 using BookRadar.Infrastructure.Repositories.History;
+using Mapster;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

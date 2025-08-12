@@ -15,7 +15,7 @@ public sealed class OpenLibraryHttpClient(HttpClient http, IMapper mapper) : IBo
         var payload = await http.GetFromJsonAsync<OpenLibraryResponse>(url, ct)
                       ?? new OpenLibraryResponse();
 
-        // mapear docs -> Domain.Book (con Mapster)
+        // mapear docs -> Domain.Book
         var mapped = mapper.Map<IReadOnlyList<Book>>(payload.Docs);
         return mapped;
     }

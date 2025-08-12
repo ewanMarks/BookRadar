@@ -19,7 +19,7 @@ h1, h2 {
     vertical-align: middle;
 }
 
-/* Truncamiento elegante si hay títulos largos */
+/* Truncamiento si hay títulos largos */
 .text-truncate-2 {
     overflow: hidden;
     display: -webkit-box;
@@ -27,7 +27,7 @@ h1, h2 {
     -webkit-box-orient: vertical;
 }
 
-/* Botones con íconos de bootstrap (usaremos emojis simples para evitar libs) */
+/* Botones con íconos de bootstrap*/
 .btn-icon {
     display: inline-flex;
     align-items: center;

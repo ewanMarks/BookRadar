@@ -9,7 +9,7 @@ public sealed class SearchHistoryEntityConfiguration : IEntityTypeConfiguration<
     public void Configure(EntityTypeBuilder<SearchHistoryEntity> b)
     {
         // Tabla con nombre del enunciado:
-        b.ToTable("HistorialBusquedas"); // requerido por la prueba
+        b.ToTable("HistorialBusquedas");
         b.HasKey(x => x.Id);
 
         // Columnas
@@ -19,7 +19,7 @@ public sealed class SearchHistoryEntityConfiguration : IEntityTypeConfiguration<
         b.Property(x => x.Publisher).HasColumnName("Editorial").HasMaxLength(200);
         b.Property(x => x.SearchedAt).HasColumnName("FechaConsulta").IsRequired();
 
-        // Índice para evitar duplicados cercanos (acelera ExistsWithin)
+        // Índice para evitar duplicados cercanos
         b.HasIndex(x => new { x.Author, x.Title, x.SearchedAt });
     }
 }
